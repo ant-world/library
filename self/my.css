@@ -1,3 +1,14 @@
 body .layout{
     max-width: 100%; 
 }
+
+/* 自定义侧边栏 常用笔记 的样式 */
+.my_everyblog_a a{
+    color: #009d96;
+    font-weight: 800;
+    font-size: larger;
+    margin-left: 10px;
+}
+.my_everyblog_a a:hover{
+    color:rgb(219, 150, 0)
+}

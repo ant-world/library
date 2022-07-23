@@ -99,7 +99,7 @@
   }
   
   #article-container figure.highlight .code pre .line {
-    color:rgb(230, 230, 230)
+    color:rgb(255, 218, 218)
   }
   #article-container figure.highlight .code pre .line .tag {
     color:#b4ce5e
@@ -121,4 +121,32 @@
   }
   #article-container figure.highlight .code pre .line .comment{
     color:#f0ffe9
+  }
+
+  #article-container figure.highlight .hljs {
+    color:rgb(224, 207, 207)
+  }
+  #article-container figure.highlight .hljs .hljs-tag {
+    color:#b4ce5e
+  }
+  #article-container figure.highlight .hljs .hljs-name {
+    color:#c3ff00
+  }
+  #article-container figure.highlight .hljs .hljs-attr {
+    color:#ffb980
+  }
+  #article-container figure.highlight .hljs .hljs-string {
+    color:#84fff9
+  }
+  #article-container figure.highlight .hljs .hljs-keyword{
+    color:#c3ff00
+  }
+  #article-container figure.highlight .hljs .hljs-title{
+    color:#e9d2ff
+  }
+  #article-container figure.highlight .hljs .hljs-comment{
+    color:#f0ffe9
+  }
+  #article-container figure.highlight .hljs .hljs-variable{
+    color:#ffc290
   }
