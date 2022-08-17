@@ -3,6 +3,8 @@
     Author:   Jan T. Sott
     License:  Creative Commons Attribution-ShareAlike 4.0 Unported License
     URL:      https://github.com/idleberg/Kimbie-highlight.js
+    
+    代码块颜色样式
 */
 
 /* 新添加的內容
@@ -124,7 +126,7 @@
   }
 
   #article-container figure.highlight .hljs {
-    color:rgb(224, 207, 207)
+    color:rgb(247, 236, 236)
   }
   #article-container figure.highlight .hljs .hljs-tag {
     color:#b4ce5e
@@ -142,11 +144,17 @@
     color:#c3ff00
   }
   #article-container figure.highlight .hljs .hljs-title{
-    color:#e9d2ff
+    color:#debbff
   }
   #article-container figure.highlight .hljs .hljs-comment{
-    color:#f0ffe9
+    color:#d3ffbe
   }
   #article-container figure.highlight .hljs .hljs-variable{
     color:#ffc290
+  }
+  #article-container figure.highlight .hljs .hljs-number{
+    color:#9ecbff
+  }
+  #article-container figure.highlight .hljs .hljs-literal{
+    color:#fffc31
   }

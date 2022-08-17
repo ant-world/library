@@ -12,3 +12,53 @@ body .layout{
 .my_everyblog_a a:hover{
     color:rgb(219, 150, 0)
 }
+
+/* 文章目录结构修改 */
+
+#aside-content #card-toc .toc-content > *{
+    margin:0 26px !important;
+}
+/* 子目录所有子节点 */
+#aside-content #card-toc .toc-content:not(.is-expand) .toc-item.active .toc-child{
+    margin-left: 26px;
+    padding-left: 0px;
+    
+}
+#aside-content #card-toc .toc-content > * > .toc-item > .toc-child{
+    border:none;
+}
+
+/* 单个节点 */
+#aside-content #card-toc .toc-content .toc-link{
+    padding:0 0 0 10px;
+    margin:0px;
+    border:1px solid #cacaca;;
+}
+
+.toc-level-1 > .toc-link, .toc-level-3 > .toc-link, .toc-level-5 > .toc-link, .toc-level-7 > .toc-link, .toc-level-9 > .toc-link, .toc-level-11 > .toc-link, .toc-level-13 > .toc-link{
+    background-color: rgb(255, 249, 239);
+}
+.toc-level-2 > .toc-link, .toc-level-4 > .toc-link, .toc-level-6 > .toc-link, .toc-level-8 > .toc-link, .toc-level-10 > .toc-link, .toc-level-12 > .toc-link, .toc-level-14 > .toc-link{
+    background-color: rgb(238, 253, 247);
+}
+
+.toc-level-1 > .toc-link.active, .toc-level-3 > .toc-link.active, .toc-level-5 > .toc-link.active, .toc-level-7 > .toc-link.active, .toc-level-9 > .toc-link.active, .toc-level-11 > .toc-link.active, .toc-level-13 > .toc-link.active{
+    background-color: rgb(255, 249, 239) !important;
+    color: rgb(100, 100, 100) !important;
+    font-weight:bold;
+    font-size:larger;
+    box-shadow: -3px -3px 9px 0px #000 inset;
+    
+}
+.toc-level-2 > .toc-link.active, .toc-level-4 > .toc-link.active, .toc-level-6 > .toc-link.active, .toc-level-8 > .toc-link.active, .toc-level-10 > .toc-link.active, .toc-level-12 > .toc-link.active, .toc-level-14 > .toc-link.active{
+    background-color: rgb(238, 253, 247) !important;
+    color: rgb(100, 100, 100) !important;
+    font-weight:bold;
+    font-size: larger;
+    box-shadow: -3px -3px 9px 0px rgb(0, 0, 0) inset;
+}
+
+/* 字体大小 */
+h4, h5, h6, h7, h8, h9{
+    font-size: medium;
+}
