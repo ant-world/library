@@ -1,0 +1,533 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>webpack | 蚂蚁图书馆</title><meta name="keywords" content="JavaScript"><meta name="author" content="蚂蚁"><meta name="copyright" content="蚂蚁"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="什么是 webpack模块打包器 &#x3D;&#x3D; 构建工具  将程序员写完的 源代码 ，加工成浏览器可以：高效、稳定运行的，兼容性较好的代码 webpack 中会将前端的所有资源文件（js&#x2F;json&#x2F;css&#x2F;img&#x2F;less&#x2F;…）都作为模块处理 webpack 根据模块的依赖关系进行分析，生成对应的资源   webpack 原理 五个核心">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack">
+<meta property="og:url" content="https://ant-world.github.io/library/2022/08/21/webpack/index.html">
+<meta property="og:site_name" content="蚂蚁图书馆">
+<meta property="og:description" content="什么是 webpack模块打包器 &#x3D;&#x3D; 构建工具  将程序员写完的 源代码 ，加工成浏览器可以：高效、稳定运行的，兼容性较好的代码 webpack 中会将前端的所有资源文件（js&#x2F;json&#x2F;css&#x2F;img&#x2F;less&#x2F;…）都作为模块处理 webpack 根据模块的依赖关系进行分析，生成对应的资源   webpack 原理 五个核心">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+<meta property="article:published_time" content="2022-08-21T07:05:59.000Z">
+<meta property="article:modified_time" content="2022-08-22T17:41:27.233Z">
+<meta property="article:author" content="蚂蚁">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/library/img/favicon.png"><link rel="canonical" href="https://ant-world.github.io/library/2022/08/21/webpack/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/library/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/library/',
+  algolia: {"appId":"BPOITDTP8G","apiKey":"cc1beffb49df9f29e989212825ed74b5","indexName":"hexo","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'webpack',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-08-23 01:41:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/library/self/Kimbiedark.css"><link rel="stylesheet" href="/library/self/my.css"><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/library/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/library/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/library/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/library/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/library/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/library/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/library/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/library/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/library/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/library/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/library/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/library/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/library/">蚂蚁图书馆</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/library/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/library/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/library/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/library/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/library/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/library/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/library/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/library/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/library/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">webpack</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-21T07:05:59.000Z" title="发表于 2022-08-21 15:05:59">2022-08-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-08-22T17:41:27.233Z" title="更新于 2022-08-23 01:41:27">2022-08-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/library/categories/%E7%BC%96%E7%A8%8B/">编程</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="webpack"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="什么是-webpack"><a href="#什么是-webpack" class="headerlink" title="什么是 webpack"></a>什么是 webpack</h1><p>模块打包器 &#x3D;&#x3D; 构建工具</p>
+<ol>
+<li>将程序员写完的 <em><strong>源代码</strong></em> ，加工成浏览器可以：高效、稳定运行的，兼容性较好的代码</li>
+<li>webpack 中会将前端的所有资源文件（js&#x2F;json&#x2F;css&#x2F;img&#x2F;less&#x2F;…）都作为模块处理</li>
+<li>webpack 根据模块的依赖关系进行分析，生成对应的资源</li>
+</ol>
+<hr>
+<h1 id="webpack-原理"><a href="#webpack-原理" class="headerlink" title="webpack 原理"></a>webpack 原理</h1><blockquote>
+<p>五个核心概念</p>
+</blockquote>
+<ol>
+<li>【入口（enter）】<ul>
+<li>指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始</li>
+</ul>
+</li>
+<li>【输出（output）】<ul>
+<li>在哪里输出文件，以及如何命名这些文件</li>
+</ul>
+</li>
+<li>【Loader】<ul>
+<li>处理那些非 JavaScript 文件（webpack 自身只能解析 JavaScript和json）</li>
+</ul>
+</li>
+<li>【插件（plugins）】<ul>
+<li>执行范围更广的任务，从打包到优化都可以实现</li>
+</ul>
+</li>
+<li>【模式（mode）】<ul>
+<li>有生产模式 <em><strong>production</strong></em> 和 开发模式 <em><strong>development</strong></em></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>loader 的理解</p>
+</blockquote>
+<ol>
+<li>webpack 本身只能处理 JS、JSON 模块，如果要加载其他类型文件（模块），需要使用对应的 loader</li>
+<li>它本身是一个函数，接受源文件作为参数，返回转换的结果</li>
+<li>loader 一般以 xxx-loader 的方式命名， xxx 代表了这个 loader 要做的转换功能，比如 css-loader</li>
+</ol>
+<blockquote>
+<p>plugins 的理解</p>
+</blockquote>
+<ul>
+<li>插件可以完成一些 loader 不能完成的功能</li>
+</ul>
+<blockquote>
+<p>配置文件</p>
+</blockquote>
+<ul>
+<li>webpack.config.js：用于存储 webpack 配置信息</li>
+</ul>
+<hr>
+<h1 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h1><ol>
+<li>初始化项目<ul>
+<li>使用 npm init 或 yarn init 生成 package.json 文件</li>
+</ul>
+</li>
+<li>安装 webpack<ul>
+<li><code>npm i webpack@4 webpack-cli@3 -g</code>   &#x2F;&#x2F;全局安装作为指令使用</li>
+<li><code>npm i webpack@4 webpack-cli@3 -D</code>   &#x2F;&#x2F;本地安装作为本地依赖使用</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>注意事项</p>
+</blockquote>
+<ol>
+<li>webpack 版本和 webpack-cli 版本永远相差一个 webpack@4 版本对应 webpack-cli@3 版本，以此类推</li>
+<li>全局安装之后，最好也局部安装一下，有些错误是因为没有局部安装 webpack 引起的</li>
+</ol>
+<h1 id="基础实现"><a href="#基础实现" class="headerlink" title="基础实现"></a>基础实现</h1><blockquote>
+<p>基本配置结构</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span> = &#123;<br>   <span class="hljs-attr">mode</span>:<span class="hljs-string">&quot;...&quot;</span>,       <span class="hljs-comment">//工作模式</span><br>   <span class="hljs-attr">enter</span>:<span class="hljs-string">&quot;...&quot;</span>,      <span class="hljs-comment">//入口文件</span><br>   <span class="hljs-attr">output</span>:&#123;...&#125;,     <span class="hljs-comment">//出口文件（输出目录 和 出口文件）</span><br>   <span class="hljs-attr">rules</span>:[...],      <span class="hljs-comment">//配置 loader</span><br>   <span class="hljs-attr">plugins</span>:[...],    <span class="hljs-comment">//配置插件</span><br>   <span class="hljs-attr">devServer</span>:&#123;...&#125;   <span class="hljs-comment">//配置开发服务器</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="通过命令实现"><a href="#通过命令实现" class="headerlink" title="通过命令实现"></a>通过命令实现</h2><p><code>webpack 入口文件路径 -o 输出文件路径 --mode=development</code></p>
+<ul>
+<li>–mode<ol>
+<li>development（开发模式）</li>
+<li>production（生产模式）</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="通过配置实现"><a href="#通过配置实现" class="headerlink" title="通过配置实现"></a>通过配置实现</h2><ol>
+<li>根目录创建 <em><strong>webpack.config.js</strong></em> 文件<ul>
+<li>该文件是 webpack 的配置文件，所有 webpack 的任务、用到的 loader 、plugins 都要配置在这</li>
+<li>该文件要符合 CJS 模块化规范</li>
+</ul>
+</li>
+<li>文件中引入 Node 中一个内置 path 模块，专门用于解决路径问题</li>
+<li>使用 CJS 模块暴露一个对象，这个对象就是 webpack 的详细配置对象</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>) <span class="hljs-comment">//引入node中的处理路径的 path 模块</span><br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>   <span class="hljs-attr">mode</span>:<span class="hljs-string">&quot;development&quot;</span>,  <span class="hljs-comment">//工作模式</span><br>   <span class="hljs-attr">enter</span>:<span class="hljs-string">&quot;./src/js/app.js&quot;</span>,   <span class="hljs-comment">//入口文件</span><br>   <span class="hljs-comment">/* 完整写法</span><br><span class="hljs-comment">      enter:&#123;</span><br><span class="hljs-comment">         main:&quot;./src/js/app.js&quot;</span><br><span class="hljs-comment">      &#125;</span><br><span class="hljs-comment">   */</span><br>   <span class="hljs-attr">output</span>:&#123; <span class="hljs-comment">// 输出文件</span><br>      <span class="hljs-attr">path</span>:path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&quot;build&quot;</span>),  <span class="hljs-comment">// 定义所有输出文件的目录：__dirname 当前目录（webpack.config.js 所在目录）下的 “build” 目录</span><br>      <span class="hljs-attr">filename</span>:<span class="hljs-string">&quot;js/app.js&quot;</span> <span class="hljs-comment">//定义 出口文件 的路径和名字</span><br>      <span class="hljs-attr">publicPath</span>:<span class="hljs-string">&quot;/build/&quot;</span> <span class="hljs-comment">//定义代码中引用资源的路径</span><br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>webpack.config.js 配置文件</p>
+</blockquote>
+<ol>
+<li>这个文件名是可以随意定义的，只不过定义为 <em><strong>webpack.config.js</strong></em> 调用 <em><strong>webpack命令</strong></em> 时，不需要指定配置文件</li>
+<li>指定配置文件调用配置项<ul>
+<li>如果放在 <em><strong>config</strong></em> 目录下</li>
+<li><code>webpack --config ./config/webpack.config.js</code></li>
+</ul>
+</li>
+<li>可以为生产环境单独配置一个配置文件，配置 <em><strong>package.json</strong></em> 文件的 <em><strong>scripts</strong></em> 属性定义打包命令<ul>
+<li><code>scripts:&#123;build:&quot;webpack --config ./config/webpack.pron.js&quot;&#125;</code></li>
+<li>调用：<code>npm run build</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="loader-配置"><a href="#loader-配置" class="headerlink" title="loader 配置"></a>loader 配置</h1><ol>
+<li>npm 安装相关 loader</li>
+<li>配置 webpack.config.js</li>
+</ol>
+<ul>
+<li><code>module.exports=&#123;...&#125;</code> ：暴露 webpack 配置对象<ul>
+<li><code>module:&#123;...&#125;</code> ：模块配置<ul>
+<li><code>rules:[...]</code> ：规则组<ul>
+<li><code>&#123;...&#125;</code> ：规则（多个）<ul>
+<li><code>test:&quot;/\.css$/&quot;</code> ：文件匹配规则</li>
+<li><code>exclude:&quot;\.(html|css)&quot;</code> ：排除这些其他的文件，与 test 对立</li>
+<li><code>use: [&quot;xxx&quot;,&quot;yyy&quot;,&quot;zzz&quot;]</code> ：loader (loader 调用顺序从后往前)</li>
+<li><code>loader:&quot;...&quot;</code> ：使用单个 loader，与 use 对立</li>
+<li><code>options:&#123;...&#125;</code> ：配置 loader 参数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>module.rules 中配置一个一个的 <em><strong>规则</strong></em>，每个规则配置需要调用的多个 <em><strong>loader</strong></em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>   <span class="hljs-attr">module</span>:&#123;<br>      <span class="hljs-attr">rules</span>:[<br>         &#123;<br>            <span class="hljs-attr">test</span>:<span class="hljs-string">&quot;...&quot;</span>,<br>            <span class="hljs-attr">use</span>:[<span class="hljs-string">&quot;xxx&quot;</span>,<span class="hljs-string">&quot;yyy&quot;</span>]<br>         &#125;<br>      ]<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="css"><a href="#css" class="headerlink" title="css"></a>css</h2><hr>
+<h3 id="css-解析为-js"><a href="#css-解析为-js" class="headerlink" title="css 解析为 js"></a>css 解析为 js</h3><ol>
+<li>入口文件引入 css 文件 <ul>
+<li><code>import &quot;../css/demo.css&quot;</code></li>
+</ul>
+</li>
+<li>安装 <em><strong>loader</strong></em><ol>
+<li><code>npm i css-loader -D</code></li>
+<li><code>npm i style-loader -D</code></li>
+</ol>
+</li>
+<li>wabpack.config.js 文件配置<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">rules</span>:[<br>   &#123;<br>      <span class="hljs-attr">test</span>:<span class="hljs-string">&quot;/\.css$/&quot;</span>,  <span class="hljs-comment">//该规则要处理的文件格式</span><br>      <span class="hljs-attr">use</span>:[<br>         <span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-comment">// 创建 style 标签，将引入的样式字符串添加到此 style 标签，将标签插入html页面</span><br>         <span class="hljs-string">&quot;css-loader&quot;</span>   <span class="hljs-comment">//将css文件变成 commonjs 模块加载到js中，里面内容是字符串</span><br>         <br>         <span class="hljs-comment">/*完整写法</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">         &#123;loader: &quot;style-loader&quot;&#125;,</span><br><span class="hljs-comment">         &#123;loader: &quot;css-loader&quot;&#125;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">         */</span><br>      ]<br>   &#125;<br>]<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h3 id="less-解析为-js"><a href="#less-解析为-js" class="headerlink" title="less 解析为 js"></a>less 解析为 js</h3><ol>
+<li>入口文件引入 less 文件 <ul>
+<li><code>import &quot;../css/demo.less&quot;</code></li>
+</ul>
+</li>
+<li>安装 <em><strong>loader</strong></em><ol>
+<li><code>npm i css-loader -D</code></li>
+<li><code>npm i style-loader -D</code></li>
+<li><code>npm i less-loader -D</code></li>
+<li><code>npm i less -D</code>   &#x2F;&#x2F; 不是 loader 是代码中使用 less 必要的库</li>
+</ol>
+</li>
+<li>wabpack.config.js 文件配置<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">rules</span>:[<br>   &#123;<br>      <span class="hljs-attr">test</span>:<span class="hljs-string">&quot;/\.less$/&quot;</span>,  <span class="hljs-comment">//该规则要处理的文件格式</span><br>      <span class="hljs-attr">use</span>:[<br>         <span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-comment">// 创建 style 标签，将引入的样式字符串添加到此 style 标签，将标签插入html页面</span><br>         <span class="hljs-string">&quot;css-loader&quot;</span>,   <span class="hljs-comment">//将css文件变成 commonjs 模块加载到js中，里面内容是字符串</span><br>         <span class="hljs-string">&quot;less-loader&quot;</span><br>         <span class="hljs-comment">/*完整写法</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">         &#123;loader: &quot;style-loader&quot;&#125;,</span><br><span class="hljs-comment">         &#123;loader: &quot;css-loader&quot;&#125;</span><br><span class="hljs-comment">         &#123;loader: &quot;less-loader&quot;&#125;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">         */</span><br>      ]<br>   &#125;<br>]<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h3 id="处理-css-兼容"><a href="#处理-css-兼容" class="headerlink" title="处理 css 兼容"></a>处理 css 兼容</h3><ol>
+<li>安装 <em><strong>postcss-loader</strong></em> 和 <em><strong>postcss</strong></em><ul>
+<li><code>npm i postcss-loader postcss -D</code></li>
+</ul>
+</li>
+<li>配置 webpack.config.js</li>
+<li>配置 package.json 添加配置项</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">rules</span>:[<br>   &#123;<br>      <span class="hljs-attr">test</span>:<span class="hljs-regexp">/\.css$/i</span>,<br>      <span class="hljs-attr">use</span>:[<br>         <span class="hljs-string">&quot;style-loader&quot;</span>,<br>         <span class="hljs-string">&quot;css-loader&quot;</span>,<br>         &#123;<br>            <span class="hljs-attr">loader</span>:<span class="hljs-string">&quot;postcss-loader&quot;</span>,<br>            <span class="hljs-attr">options</span>:&#123;<br>               <span class="hljs-attr">postcssOptions</span>:&#123;<br>                  <span class="hljs-attr">plugins</span>:[<br>                     <span class="hljs-string">&quot;postcss-preset-env&quot;</span><br>                  ]<br>               &#125;<br>            &#125;<br>         &#125;<br>      ]<br>   &#125;<br>]<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-string">&quot;browserslist&quot;</span>:[<br>   <span class="hljs-comment">//开发环境</span><br>   <span class="hljs-string">&quot;development&quot;</span>:[<br>      <span class="hljs-string">&quot;last 1 chrome version&quot;</span>,<br>      <span class="hljs-string">&quot;last 1 firefox version&quot;</span>,<br>      <span class="hljs-string">&quot;last 1 safari version&quot;</span>,<br>   ],<br>   <span class="hljs-comment">//生产环境：默认是生产环境</span><br>   <span class="hljs-string">&quot;production&quot;</span>:[<br>      <span class="hljs-string">&quot;&gt;0.2%&quot;</span>, <span class="hljs-comment">// 兼容失眠上99.8%</span><br>      <span class="hljs-string">&quot;not dead&quot;</span>, <span class="hljs-comment">// “死去”的浏览器不兼容 如：ie8</span><br>      <span class="hljs-string">&quot;not op_mini all&quot;</span> <span class="hljs-comment">//不做opera浏览器mini版的兼容</span><br>      <span class="hljs-string">&quot;ie 10&quot;</span>  <span class="hljs-comment">//兼容ie10</span><br>   ]<br>]<br></code></pre></td></tr></table></figure>
+
+<h2 id="js"><a href="#js" class="headerlink" title="js"></a>js</h2><hr>
+<h3 id="js语法检查"><a href="#js语法检查" class="headerlink" title="js语法检查"></a>js语法检查</h3><ol>
+<li>安装 <em><strong>eslint-loader</strong></em> 和 <em><strong>eslint</strong></em><ul>
+<li><code>npm i eslint-loader eslint -D</code></li>
+</ul>
+</li>
+<li>安装检查库（配置好的规则）：<em><strong>eslint-config-airbnb-base</strong></em> 和 <em><strong>eslint-plugin-import</strong></em><ul>
+<li><code>npm i eslint-config-airbnb-base eslint-plugin-import -D</code></li>
+</ul>
+</li>
+<li>配置 webpack.config.js</li>
+<li>配置 package.json 添加配置项</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">rules</span>:[<br>   &#123;<br>      <span class="hljs-attr">test</span>:<span class="hljs-regexp">/\.js$/</span>,<br>      <span class="hljs-attr">exclude</span>:<span class="hljs-regexp">/node_modules/</span>, <span class="hljs-comment">//排除目录</span><br>      <span class="hljs-attr">enforce</span>:<span class="hljs-string">&quot;pre&quot;</span>,  <span class="hljs-comment">//优先执行</span><br>      <span class="hljs-attr">loader</span>:<span class="hljs-string">&quot;eslint-loader&quot;</span>,<br>      <span class="hljs-attr">options</span>:&#123;<br>         <span class="hljs-attr">fix</span>:<span class="hljs-literal">true</span> <span class="hljs-comment">//若有问题自动修复</span><br>      &#125;<br>   &#125;<br>]<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-string">&quot;eslintConfig&quot;</span>:&#123;<br>   <span class="hljs-string">&quot;extends&quot;</span>:<span class="hljs-string">&quot;airbinb-base&quot;</span>, <span class="hljs-comment">//直接使用 airbnb-base提供规则</span><br>   <span class="hljs-string">&quot;env&quot;</span>:&#123;<br>      <span class="hljs-string">&quot;browser&quot;</span>:<span class="hljs-literal">true</span><br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="ES6-语法转换"><a href="#ES6-语法转换" class="headerlink" title="ES6 语法转换"></a>ES6 语法转换</h3><ol>
+<li>安装 <em><strong>babel-loader</strong></em> 、***@babel&#x2F;core<em><strong>、</strong></em>@babel&#x2F;preset-env***<ul>
+<li><code>npm i babel-loader @babel/core @babel/preset-env -D</code></li>
+</ul>
+</li>
+<li>配置 webpack.config.js</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">rules</span>:[<br>   &#123;<br>      <span class="hljs-attr">test</span>:<span class="hljs-regexp">/\.js$/</span>,<br>      <span class="hljs-attr">exclude</span>:<span class="hljs-regexp">/node_modules/</span>, <span class="hljs-comment">//排除目录</span><br>      <span class="hljs-attr">use</span>:&#123;<br>         <span class="hljs-attr">loader</span>:<span class="hljs-string">&quot;babel-loader&quot;</span>,<br>         <span class="hljs-attr">options</span>:&#123;<br>            <span class="hljs-attr">presets</span>:[<span class="hljs-string">&quot;@babel/preset-env&quot;</span>]<br>         &#125;<br>      &#125;<br>   &#125;<br>]<br></code></pre></td></tr></table></figure>
+
+<h3 id="js-兼容性"><a href="#js-兼容性" class="headerlink" title="js 兼容性"></a>js 兼容性</h3><ol>
+<li>安装 <em><strong>@babel&#x2F;polyfill</strong></em><ul>
+<li><code>npm i @babel/polyfill -D</code></li>
+</ul>
+</li>
+<li>app.js 中模块引入<ul>
+<li><code>import &quot;@babel/polyfill&quot;</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h2><hr>
+<h3 id="解析css样式中图片"><a href="#解析css样式中图片" class="headerlink" title="解析css样式中图片"></a>解析css样式中图片</h3><blockquote>
+<p>功能</p>
+</blockquote>
+<ol>
+<li>指定大小的图片转为base64</li>
+<li>输出图片到指定路径</li>
+<li>指定加工后图片名字</li>
+</ol>
+<blockquote>
+<p>用法</p>
+</blockquote>
+<ol>
+<li>安装 <em><strong>url-loader</strong></em><ul>
+<li><code>npm i url-loader -D</code></li>
+</ul>
+</li>
+<li>webpack.config.js 配置<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">module</span>:&#123;<br>   <span class="hljs-attr">rules</span>:[<br>      &#123;<br>         <span class="hljs-attr">test</span>:<span class="hljs-string">&quot;\.(jpg|png|gif)&quot;</span>,<br>         <span class="hljs-attr">loader</span>:<span class="hljs-string">&quot;url-loader&quot;</span>,<br>         <span class="hljs-attr">options</span>:&#123;<br>            <span class="hljs-attr">limit</span>: <span class="hljs-number">8</span> * <span class="hljs-number">1024</span>,  <span class="hljs-comment">// 小于 8k 的图片会转为 base64</span><br>            <span class="hljs-attr">name</span>:<span class="hljs-string">&quot;[hash:10].[ext]&quot;</span>, <span class="hljs-comment">// 加工后的图片名字 hash 值的前10位</span><br>            <span class="hljs-attr">outputPath</span>:<span class="hljs-string">&quot;imgs&quot;</span> <span class="hljs-comment">// 输出路径下的 imgs 中</span><br>         &#125;<br>      &#125;<br>   ]<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="解析html中的图片"><a href="#解析html中的图片" class="headerlink" title="解析html中的图片"></a>解析html中的图片</h3><p>将文件复制到指定目录</p>
+<ol>
+<li>安装 <em><strong>html-loader</strong></em><ul>
+<li><code>npm i html-loader -D</code></li>
+</ul>
+</li>
+<li>webpack.config.js 配置<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">rules</span>:[<br>   &#123;<br>      <span class="hljs-attr">test</span>:<span class="hljs-string">&quot;\.html$&quot;</span>,<br>      <span class="hljs-attr">loader</span>:<span class="hljs-string">&quot;html-lader&quot;</span><br>   &#125;<br>]<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><p>将文件复制到指定目录</p>
+<ol>
+<li>安装 <em><strong>file-loader</strong></em><ul>
+<li><code>npm i file-loader -D</code></li>
+</ul>
+</li>
+<li>webpack.config.js 配置</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">rules</span>:[<br>   &#123;<br>      <span class="hljs-attr">exclude</span>:<span class="hljs-string">&quot;\.(html|less|css|png|jpg|bmp|gif|json)&quot;</span>,  <span class="hljs-comment">// 除了这些以外的文件</span><br>      <span class="hljs-attr">use</span>:[<br>         &#123;<br>            <span class="hljs-attr">loader</span>:<span class="hljs-string">&quot;file-loader&quot;</span>,   <span class="hljs-comment">// 配置 loader</span><br>            <span class="hljs-attr">potions</span>:&#123;<br>               <span class="hljs-attr">outputPath</span>:<span class="hljs-string">&quot;media&quot;</span>,  <span class="hljs-comment">// 输出文件的目录，webpack 基本配置的出口目录中的 media 目录</span><br>               <span class="hljs-attr">name</span>:<span class="hljs-string">&quot;[hash:5].[ext]&quot;</span>   <span class="hljs-comment">// 文件名 hash 前5个</span><br>            &#125;<br>         &#125;<br>      ]<br>   &#125;<br>]<br></code></pre></td></tr></table></figure>
+
+<h1 id="plugins-配置"><a href="#plugins-配置" class="headerlink" title="plugins 配置"></a>plugins 配置</h1><ol>
+<li>npm 安装相关 plugin 插件</li>
+<li>webpack.config.js 文件中 CJS 模块语法引入 plugin 插件模块<ul>
+<li><code>var xxxPlugin = require(</code>xxx-yyy-plugin<code>)</code></li>
+</ul>
+</li>
+<li>配置 webpack.config.js<ul>
+<li><code>module.exports=&#123;...&#125;</code> ：暴露 webpack 配置对象<ul>
+<li><code>plugins:[...]</code> ：插件组<ul>
+<li><code>new xxxPlugin()</code> ：实例化插件<ul>
+<li>{…} ：实例化时传递配置项</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>plugins 中配置多个 <em><strong>插件对象</strong></em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>   <span class="hljs-attr">plugins</span>:[<span class="hljs-keyword">new</span> <span class="hljs-title function_">xxxPlugin</span>(&#123;...&#125;)]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="html"><a href="#html" class="headerlink" title="html"></a>html</h2><hr>
+<h3 id="生成html文件"><a href="#生成html文件" class="headerlink" title="生成html文件"></a>生成html文件</h3><ol>
+<li>安装 <em><strong>html-webpack-plugin</strong></em> 插件<ul>
+<li><code>npm i html-webpack-plugin -D</code></li>
+</ul>
+</li>
+<li><em><strong>webpack.config.js</strong></em> 引入插件<ul>
+<li><code>require(&quot;html-webpack-plugin&quot;)</code></li>
+</ul>
+</li>
+<li>插件组配置插件实例</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> httpWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>)<br><br><span class="hljs-attr">output</span>:&#123; <span class="hljs-comment">// 输出文件</span><br>   <span class="hljs-attr">path</span>:path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&quot;build&quot;</span>),  <span class="hljs-comment">// html输出位置由 output 配置项决定</span><br>   <span class="hljs-attr">filename</span>:<span class="hljs-string">&quot;js/app.js&quot;</span> <span class="hljs-comment">//定义出口文件的路径和名字</span><br>&#125;<br><span class="hljs-attr">plugins</span>:[<span class="hljs-keyword">new</span> <span class="hljs-title function_">httpWebpackPlugin</span>(&#123;<br>   <span class="hljs-attr">template</span>:<span class="hljs-string">&quot;./src/html.html&quot;</span> <span class="hljs-comment">// 依据自定义的html生成新的html文件</span><br>&#125;)]<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="css-1"><a href="#css-1" class="headerlink" title="css"></a>css</h2><hr>
+<h3 id="提取-css-为单文件"><a href="#提取-css-为单文件" class="headerlink" title="提取 css 为单文件"></a>提取 css 为单文件</h3><ol>
+<li>安装 <em><strong>mini-css-extract-plugin</strong></em><ul>
+<li><code>npm i mini-css-extract-plugin -D</code></li>
+</ul>
+</li>
+<li><em><strong>webpack.config.js</strong></em> 引入插件<ul>
+<li><code>const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;)</code></li>
+</ul>
+</li>
+<li>配置 webpack.config.js<ol>
+<li>添加插件实例</li>
+<li>添加插件实例的loader</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;mini-css-extract-plugin&quot;</span>)<br><br><span class="hljs-attr">rules</span>:[<span class="hljs-title class_">MiniCssExtractPlugin</span>.<span class="hljs-property">loader</span>],   <span class="hljs-comment">//添加loader</span><br><span class="hljs-attr">plugins</span>:[<br>   <span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniCssExtractPlugin</span>(&#123;    <span class="hljs-comment">//添加插件实例</span><br>      <span class="hljs-attr">filename</span>:<span class="hljs-string">&quot;/css/index.css&quot;</span>  <span class="hljs-comment">//配置新建css文件路径和名字</span><br>   &#125;)<br>]<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>问题</p>
+</blockquote>
+<ol>
+<li>如果定义新建css路径，使用 loader 解析的图片可能引用不到<ul>
+<li>解决：<ul>
+<li>output 配置项中，添加 <em><strong>publicPath</strong></em> 属性</li>
+<li>当部署到服务器，<em><strong>项目地址</strong></em> 和 <em><strong>资源目录地址</strong></em> 可能不同，所以部署到服务器时，<em><strong>publicPath</strong></em> 需要配置为 服务器地址</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="压缩-css-文件"><a href="#压缩-css-文件" class="headerlink" title="压缩 css 文件"></a>压缩 css 文件</h3><ol>
+<li>安装 <em><strong>optimize-css-assets-webpack-plugin</strong></em><ul>
+<li><code>npm i optimize-css-assets-webpack-plugin -D</code></li>
+</ul>
+</li>
+<li>webpack.config.js 引入插件<ul>
+<li><code>const OptimizeCssAssetsPlugin = require(&quot;optimize-css-assets-webpack-plugin&quot;)</code></li>
+</ul>
+</li>
+<li>webpack.config.js 配置插件</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">plugins</span>:[<br>   <span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimizeCssAssetsPlugin</span>(&#123;<br>      <span class="hljs-attr">cssProcessorPluginOptions</span>:&#123;<br>         <span class="hljs-attr">preset</span>:[<br>            <span class="hljs-string">&quot;default&quot;</span>,<br>            &#123;<br>               <span class="hljs-attr">discardComments</span>:&#123;<br>                  <span class="hljs-attr">removeAll</span>:<span class="hljs-literal">true</span><br>               &#125;<br>            &#125;<br>         ]<br>      &#125;<br>   &#125;)<br>]<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="webpack-dev-server"><a href="#webpack-dev-server" class="headerlink" title="webpack-dev-server"></a>webpack-dev-server</h1><blockquote>
+<p>作用</p>
+</blockquote>
+<ol>
+<li>webpack 可以配置开发服务器</li>
+<li>更新代码后，会自动刷新渲染页面，不需要执行命令编译</li>
+<li>可以开启热模块更新功能<ul>
+<li>更新代码之后，只重新渲染修改部分，其他部分保持不变，不会刷新整个页面</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>特点</p>
+</blockquote>
+<p>运行命令之后，没有进行打包生成本地文件，而是在 <em><strong>内存</strong></em> 创建类似文件，关闭服务器之后将清除内存中创建的文件</p>
+<blockquote>
+<p>用法</p>
+</blockquote>
+<ol>
+<li>下载 <em><strong>webpack-dev-server</strong></em><ul>
+<li>局部安装有时不起作用，也需要进行全局安装</li>
+</ul>
+</li>
+<li>配置 webpack.config.js 文件</li>
+<li>执行命令<ul>
+<li><code>webpack-dev-server</code></li>
+</ul>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span> = &#123;<br>   <span class="hljs-comment">//工作模式</span><br>   <span class="hljs-attr">mode</span>:<span class="hljs-string">&quot;development&quot;</span>,  <br><br>   <span class="hljs-comment">//入口文件</span><br>   <span class="hljs-attr">enter</span>:<span class="hljs-string">&quot;./src/js/app.js&quot;</span>,<br>   <span class="hljs-comment">/* 完整写法</span><br><span class="hljs-comment">   enter:&#123;</span><br><span class="hljs-comment">      main:&quot;./src/js/app.js&quot;</span><br><span class="hljs-comment">   &#125;</span><br><span class="hljs-comment">   */</span><br><br>   <span class="hljs-comment">// 输出文件</span><br>   <span class="hljs-attr">output</span>:&#123;<br>      <span class="hljs-attr">path</span>:path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&quot;build&quot;</span>),  <span class="hljs-comment">// 定义输出文件的目录：__dirname 当前目录（webpack.config.js 所在目录）下的 “build” 目录</span><br>      <span class="hljs-attr">filename</span>:<span class="hljs-string">&quot;js/app.js&quot;</span> <span class="hljs-comment">//定义 出口文件 的路径和名字</span><br>      <span class="hljs-attr">publicPath</span>:<span class="hljs-string">&quot;/build/&quot;</span> <span class="hljs-comment">//定义代码中引用资源的路径</span><br>   &#125;,<br><br>   <span class="hljs-comment">// loader 配置项</span><br>   <span class="hljs-attr">rules</span>:[&#123;&#125;,&#123;&#125;],<br><br>   <span class="hljs-comment">// 插件配置项</span><br>   <span class="hljs-attr">plugins</span>:[&#123;&#125;,&#123;&#125;]<br><br>   <span class="hljs-comment">// webpack 开发服务器</span><br>   <span class="hljs-attr">devServer</span>:&#123;<br>      <span class="hljs-attr">port</span>:<span class="hljs-number">5000</span>,  <span class="hljs-comment">//服务器端口</span><br>      <span class="hljs-attr">open</span>:<span class="hljs-literal">true</span>,  <span class="hljs-comment">//自动打开浏览器</span><br>      <span class="hljs-attr">hot</span>:<span class="hljs-literal">true</span> <span class="hljs-comment">// 热模块更新（热模块替换）</span><br>   &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="常用功能"><a href="#常用功能" class="headerlink" title="常用功能"></a>常用功能</h1><h2 id="loader"><a href="#loader" class="headerlink" title="loader"></a>loader</h2><img src="/library/2022/08/21/webpack/1661189711916.jpg" class="">
+
+<h2 id="plugins"><a href="#plugins" class="headerlink" title="plugins"></a>plugins</h2><img src="/library/2022/08/21/webpack/1661190063878.png" class=""></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://ant-world.github.io/library">蚂蚁</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ant-world.github.io/library/2022/08/21/webpack/">https://ant-world.github.io/library/2022/08/21/webpack/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ant-world.github.io/library" target="_blank">蚂蚁图书馆</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/library/tags/JavaScript/">JavaScript</a></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/library/2022/08/24/whistle%E4%BB%A3%E7%90%86%E5%B7%A5%E5%85%B7/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/library/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">whistle代理工具</div></div></a></div><div class="next-post pull-right"><a href="/library/2022/08/19/JS%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/library/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JS包管理器</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/library/2022/08/05/ES6%E8%AF%AD%E6%B3%95%E6%80%BB%E7%BB%93/" title="ES6语法总结"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-05</div><div class="title">ES6语法总结</div></div></a></div><div><a href="/library/2022/08/13/JS%E6%A8%A1%E5%9D%97%E5%8C%96/" title="JS模块化"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-13</div><div class="title">JS模块化</div></div></a></div><div><a href="/library/2022/08/14/Ajax/" title="Ajax"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-14</div><div class="title">Ajax</div></div></a></div><div><a href="/library/2022/08/19/JS%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/" title="JS包管理器"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-19</div><div class="title">JS包管理器</div></div></a></div><div><a href="/library/2022/08/25/Promise/" title="Promise"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-25</div><div class="title">Promise</div></div></a></div><div><a href="/library/2022/08/28/axios/" title="axios"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-28</div><div class="title">axios</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-webpack"><span class="toc-text">什么是 webpack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#webpack-%E5%8E%9F%E7%90%86"><span class="toc-text">webpack 原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="toc-text">配置方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%AE%9E%E7%8E%B0"><span class="toc-text">基础实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0"><span class="toc-text">通过命令实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E9%85%8D%E7%BD%AE%E5%AE%9E%E7%8E%B0"><span class="toc-text">通过配置实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#loader-%E9%85%8D%E7%BD%AE"><span class="toc-text">loader 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#css"><span class="toc-text">css</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#css-%E8%A7%A3%E6%9E%90%E4%B8%BA-js"><span class="toc-text">css 解析为 js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#less-%E8%A7%A3%E6%9E%90%E4%B8%BA-js"><span class="toc-text">less 解析为 js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86-css-%E5%85%BC%E5%AE%B9"><span class="toc-text">处理 css 兼容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#js"><span class="toc-text">js</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#js%E8%AF%AD%E6%B3%95%E6%A3%80%E6%9F%A5"><span class="toc-text">js语法检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES6-%E8%AF%AD%E6%B3%95%E8%BD%AC%E6%8D%A2"><span class="toc-text">ES6 语法转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js-%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="toc-text">js 兼容性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87"><span class="toc-text">图片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90css%E6%A0%B7%E5%BC%8F%E4%B8%AD%E5%9B%BE%E7%89%87"><span class="toc-text">解析css样式中图片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90html%E4%B8%AD%E7%9A%84%E5%9B%BE%E7%89%87"><span class="toc-text">解析html中的图片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90"><span class="toc-text">其他资源</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#plugins-%E9%85%8D%E7%BD%AE"><span class="toc-text">plugins 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#html"><span class="toc-text">html</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90html%E6%96%87%E4%BB%B6"><span class="toc-text">生成html文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#css-1"><span class="toc-text">css</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%8F%96-css-%E4%B8%BA%E5%8D%95%E6%96%87%E4%BB%B6"><span class="toc-text">提取 css 为单文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9-css-%E6%96%87%E4%BB%B6"><span class="toc-text">压缩 css 文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#webpack-dev-server"><span class="toc-text">webpack-dev-server</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-text">常用功能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#loader"><span class="toc-text">loader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#plugins"><span class="toc-text">plugins</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 蚂蚁</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/library/js/utils.js"></script><script src="/library/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script><script src="/library/js/search/algolia.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
