@@ -1,11 +1,20 @@
 const my_blog = [
-    {
-        name:"Vue笔记",
-        url:"https://ant-world.github.io/library/2022/07/20/Vue笔记/"
-    },
+    
     {
         name:"博客的搭建",
-        url:"https://ant-world.github.io/library/2022/06/12/blog-build/"
+        url:"/library/2022/06/12/blog-build/"
+    },
+    {
+        name:"Vue笔记",
+        url:"/library/2022/07/20/Vue笔记/"      //https://ant-world.github.io
+    },
+    {
+        name:"Vue问题",
+        url:"/library/2022/07/20/Vue问题/"
+    },
+    {
+        name:"JS包管理工具",
+        url:"/library/2022/08/19/JS包管理器/"
     }
 ]
 
