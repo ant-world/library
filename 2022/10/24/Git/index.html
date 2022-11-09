@@ -1,0 +1,976 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Git | 蚂蚁图书馆</title><meta name="keywords" content="Git"><meta name="author" content="蚂蚁"><meta name="copyright" content="蚂蚁"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Git 流程 Git 保存资料有四个区域   workspace：工作区 staging area：暂存区&#x2F;缓存区 local repository：版本库或本地仓库 remote repository：远程仓库   区域间的关系     Git 配置使用 git config 工具，来配置或读取 windows 不同环境下，Git 的相关信息和配置项。  不同环境配置方式   Wind">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git">
+<meta property="og:url" content="https://ant-world.github.io/library/2022/10/24/Git/index.html">
+<meta property="og:site_name" content="蚂蚁图书馆">
+<meta property="og:description" content="Git 流程 Git 保存资料有四个区域   workspace：工作区 staging area：暂存区&#x2F;缓存区 local repository：版本库或本地仓库 remote repository：远程仓库   区域间的关系     Git 配置使用 git config 工具，来配置或读取 windows 不同环境下，Git 的相关信息和配置项。  不同环境配置方式   Wind">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+<meta property="article:published_time" content="2022-10-24T14:07:03.000Z">
+<meta property="article:modified_time" content="2022-11-09T15:27:28.928Z">
+<meta property="article:author" content="蚂蚁">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/library/img/favicon.png"><link rel="canonical" href="https://ant-world.github.io/library/2022/10/24/Git/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/library/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/library/',
+  algolia: {"appId":"BPOITDTP8G","apiKey":"cc1beffb49df9f29e989212825ed74b5","indexName":"hexo","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Git',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-09 23:27:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/library/self/Kimbiedark.css"><link rel="stylesheet" href="/library/self/my.css"><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/library/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/library/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/library/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/library/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/library/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/library/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/library/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/library/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/library/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/library/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/library/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/library/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/library/">蚂蚁图书馆</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/library/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/library/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/library/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/library/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/library/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/library/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/library/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/library/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/library/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Git</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-24T14:07:03.000Z" title="发表于 2022-10-24 22:07:03">2022-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-09T15:27:28.928Z" title="更新于 2022-11-09 23:27:28">2022-11-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/library/categories/%E5%B7%A5%E5%85%B7/">工具</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Git"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="Git-流程"><a href="#Git-流程" class="headerlink" title="Git 流程"></a>Git 流程</h1><blockquote>
+<p>Git 保存资料有四个区域</p>
+</blockquote>
+<ul>
+<li>workspace：工作区</li>
+<li>staging area：暂存区&#x2F;缓存区</li>
+<li>local repository：版本库或本地仓库</li>
+<li>remote repository：远程仓库</li>
+</ul>
+<blockquote>
+<p>区域间的关系</p>
+</blockquote>
+<img src="/library/2022/10/24/Git/1.png" class="">
+
+<hr>
+<h1 id="Git-配置"><a href="#Git-配置" class="headerlink" title="Git 配置"></a>Git 配置</h1><p>使用 <code>git config</code> 工具，来配置或读取 windows 不同环境下，Git 的相关信息和配置项。</p>
+<blockquote>
+<p>不同环境配置方式</p>
+</blockquote>
+<ol>
+<li>Windows 所有用户可用：<code>git config --system &lt;相关配置信息&gt;</code></li>
+<li>windows 当前用户可用：<code>git config --global &lt;相关配置信息&gt;</code></li>
+<li>当前项目可用：<code>git config &lt;相关配置信息&gt;</code></li>
+</ol>
+<blockquote>
+<p>使用配置信息</p>
+</blockquote>
+<p>多种环境都设置了配置项，默认使用时的配置项根据优先级选择：</p>
+<ol>
+<li>项目</li>
+<li>当前用户</li>
+<li>所有用户</li>
+</ol>
+<hr>
+<h2 id="配置用户信息"><a href="#配置用户信息" class="headerlink" title="配置用户信息"></a>配置用户信息</h2><p>安装完 Git 之后就需要配置用户信息。每次提交的数据都会用此用户信息来区分数据的提交者。【必须配置项】</p>
+<ol>
+<li>配置用户名：<ul>
+<li><code>git config --global user.namme &quot;&lt;自定义&gt;&quot;</code></li>
+</ul>
+</li>
+<li>配置用户Email：<ul>
+<li><code>git config --global user.namme &lt;自定义email&gt;</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="其他配置项"><a href="#其他配置项" class="headerlink" title="其他配置项"></a>其他配置项</h2><ol>
+<li>配置文本编辑器：（一般使用 Vi 或者 Vim）<ul>
+<li><code>git config --global core.editor &lt;工具名称，如：emacs&gt;</code></li>
+</ul>
+</li>
+<li>配置差异分析工具：<ul>
+<li><code>git config --global merge.tool &lt;工具名称，如：vimdiff&gt;</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="查看配置信息"><a href="#查看配置信息" class="headerlink" title="查看配置信息"></a>查看配置信息</h2><ol>
+<li>查看所有配置信息：<ul>
+<li><code>git config --list</code></li>
+</ul>
+</li>
+<li>查看【指定环境】的【指定配置】信息：<ul>
+<li><code>git config --global user.name</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="vim-文本编辑器"><a href="#vim-文本编辑器" class="headerlink" title="vim 文本编辑器"></a>vim 文本编辑器</h1><p>vim 是一个文本编辑器，<a target="_blank" rel="noopener" href="https://www.vim.org/download.php">https://www.vim.org/download.php</a> 官网下载，环境变量配置 vim.exe 所在目录，即可在 DOS 命令编辑文件</p>
+<p>当执行 <code>git commit</code> 或某些命令，会打开 vim 文本编辑器，此处介绍使用 Git 时调出 vim 编辑器常用命令</p>
+<blockquote>
+<p>vim 的三种模式：</p>
+</blockquote>
+<ol>
+<li>命令模式<ul>
+<li>调用相关命令进行一些操作做，如：复制、粘贴、删除、撤销、光标移动等</li>
+</ul>
+</li>
+<li>编辑模式<ul>
+<li>用于编辑文本的信息</li>
+</ul>
+</li>
+<li>底线命令模式<ul>
+<li>在最末行通过命令将进行一些操作，如：保存、退出等</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>vim 进入模式</p>
+</blockquote>
+<ol>
+<li>命令模式：<ul>
+<li>刚打开的文件就处于命令模式</li>
+<li>按键 <code>esc</code> 进入命令模式</li>
+</ul>
+</li>
+<li>编辑模式：<ul>
+<li>按键 <code>i</code> 进入编辑模式</li>
+</ul>
+</li>
+<li>底线模式：<ul>
+<li>按键 <code>:</code> 进入底线模式</li>
+<li>使用命令，要删除全部末行内容</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>常用命令</p>
+</blockquote>
+<ul>
+<li>底线模式：<ol>
+<li>保存<ol>
+<li><code>:w</code>：保存</li>
+<li><code>:w &lt;文件路径&gt;</code>：另存为</li>
+</ol>
+</li>
+<li>退出<ol>
+<li><code>:q</code>：退出</li>
+<li><code>:wq</code>：保存并退出</li>
+<li><code>:q!</code>：强制退出</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h1><ol>
+<li>仓库：工作区、.git 所在的目录，此目录即为仓库</li>
+<li>创建 Git 仓库，会在仓库目录下生成一个隐藏的 .git 文件夹</li>
+</ol>
+<table>
+    <thead>
+        <tr>
+            <th>作用</th>
+            <th>代码</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody align="center">
+        <tr>
+            <td rowspan=2>初始化仓库</td>
+            <td><code>git init</code></td>
+            <td>当前目录下创建隐藏的 .git 目录</td>
+        </tr>
+        <tr>
+            <td><code>git init <路径></code></td>
+            <td>在指定路径下创建隐藏的 .git 目录</td>
+        </tr>
+        <tr>
+            <td rowspan=2>克隆当前分支</td>
+            <td><code>git clone <目标仓库地址></code></td>
+            <td>将目标地址仓库的当前分支，克隆到当前目录下（包括仓库目录）</td>
+        </tr>
+        <tr>
+            <td><code>git clone <目标仓库地址> <指定路径></code> </td>
+            <td>将目标地址仓库的当前分支，克隆到指定目录下（只克隆仓库内容）</td>
+        </tr>
+        <tr>
+            <td rowspan=2>克隆指定分支</td>
+            <td><code>git clone -b <分支名> <目标仓库地址></code> </td>
+            <td>将目标地址仓库的指定分支，克隆到当前目录下（包括仓库目录）</td>
+        </tr>
+        <tr>
+            <td><code>git clone -b <分支名> <目标仓库地址> <指定路径></code> </td>
+            <td>将目标地址仓库的指定分支，克隆到指定目录下（只克隆仓库内容）</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+<h1 id="本地库操作"><a href="#本地库操作" class="headerlink" title="本地库操作"></a>本地库操作</h1><hr>
+<h2 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h2><p>将 <em><strong>工作区</strong></em> 的文件添加到 <em><strong>暂存区</strong></em></p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git add &lt;文件名.tet&gt; &lt;文件名.pdf&gt; &lt;文件名&gt;</code></td>
+<td align="center">添加指定（多个）文件到暂存区</td>
+</tr>
+<tr>
+<td align="center"><code>git add &lt;路径&gt;</code></td>
+<td align="center">将指定 <strong>目录</strong> 和 <strong>目录下的内容</strong> 添加到暂存区【目录也算内容】</td>
+</tr>
+<tr>
+<td align="center"><code>git add .</code></td>
+<td align="center">当前目录下所有文件，添加到暂存区</td>
+</tr>
+<tr>
+<td align="center"><code>git add --all</code></td>
+<td align="center">将 <strong>仓库</strong> 下所有文件，添加得到暂存区【仓库中任意位置执行都可】</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h2><blockquote>
+<p>将 <em><strong>暂存区</strong></em> 内容添加到 <em><strong>本地仓库</strong></em> 中</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git commit</code></td>
+<td align="center">将暂存区的所有文件提交到本地库<br>（通过 vim 编辑器填写备注信息进行提交）</td>
+</tr>
+<tr>
+<td align="center"><code>git commit -m &quot;&lt;备注信息&gt;&quot;</code></td>
+<td align="center">将暂存区的所有文件提交到本地库</td>
+</tr>
+<tr>
+<td align="center"><code>git commit &lt;文件&gt; &lt;文件&gt; ... -m &lt;备注信息&gt;</code></td>
+<td align="center">将暂存区中指定（多个）文件提交到本地库</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>将 <em><strong>工作区</strong></em> 中进行了修改、删除操作的文件，直接提交到 <em><strong>本地库</strong></em><br>工作区新增的文件还是需要先 git add 添加到暂存区，再从暂存区提交到本地库</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git commit -a</code></td>
+<td align="center">通过 vim 编辑器填写备注信息进行提交</td>
+</tr>
+<tr>
+<td align="center"><code>git commit -a -m &quot;&lt;备注信息&gt;&quot;</code></td>
+<td align="center">直接添加备注信息进行提交</td>
+</tr>
+<tr>
+<td align="center"><code>git commit -am &quot;&lt;备注信息&gt;&quot;</code></td>
+<td align="center">效果与 <code>git commit -a -m &quot;&lt;备注信息&gt;&quot;</code> 相同</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><blockquote>
+<p>查看 <em><strong>工作区</strong></em> 和 <em><strong>暂存区</strong></em> 中 <strong>文件</strong> 的 <em><strong>状态</strong></em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git status -s</code></td>
+<td align="center">以简短方式输出状态</td>
+</tr>
+<tr>
+<td align="center"><code>git status</code></td>
+<td align="center">完整的状态和提示</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">状态码</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">红色</td>
+<td align="center">工作区文件的状态</td>
+</tr>
+<tr>
+<td align="center">绿色</td>
+<td align="center">暂存区文件的状态</td>
+</tr>
+<tr>
+<td align="center">??</td>
+<td align="center">工作区的文件，暂存区中没有，没有 git add 过（文件未被git管理，即没有建立追踪），</td>
+</tr>
+<tr>
+<td align="center">A</td>
+<td align="center">暂存区的文件，版本库中没有，没有 git commit 过</td>
+</tr>
+<tr>
+<td align="center">M</td>
+<td align="center">文件内容或mode被修改</td>
+</tr>
+<tr>
+<td align="center">C</td>
+<td align="center">文件的一个新拷贝</td>
+</tr>
+<tr>
+<td align="center">D</td>
+<td align="center">删除的文件，Git版本库中还存在</td>
+</tr>
+<tr>
+<td align="center">R</td>
+<td align="center">文件名被修改</td>
+</tr>
+<tr>
+<td align="center">T</td>
+<td align="center">文件类型被修改</td>
+</tr>
+<tr>
+<td align="center">U</td>
+<td align="center">文件没有被合并（需要完成合并才能进行提交）</td>
+</tr>
+<tr>
+<td align="center">X</td>
+<td align="center">未知状态（bug）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>查看 <em><strong>暂存区</strong></em> 的文件</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git ls-files –c</code></td>
+<td align="center">显示 <strong>暂存区</strong> 中的文件</td>
+</tr>
+<tr>
+<td align="center"><code>git ls-files</code></td>
+<td align="center">默认：同 <code>git ls-files -c</code> 一样</td>
+</tr>
+<tr>
+<td align="center"><code>git ls-files -d</code></td>
+<td align="center">显示 <strong>暂存区</strong> 比 <strong>工作区</strong> 缺少的文件</td>
+</tr>
+<tr>
+<td align="center"><code>git ls-files -m</code></td>
+<td align="center">显示 <strong>暂存区</strong> 和 <strong>工作区</strong> 内容不同的文件</td>
+</tr>
+<tr>
+<td align="center"><code>git ls-files -o</code></td>
+<td align="center">显示 <strong>暂存区</strong> 未从 <strong>工作区</strong> 添加过的文件（未 git add）</td>
+</tr>
+<tr>
+<td align="center"><code>git ls-files -s</code></td>
+<td align="center">显示 <strong>暂存区</strong> 文件的 <strong>模式位</strong>、<strong>对象名称</strong>、<strong>阶段编号</strong></td>
+</tr>
+<tr>
+<td align="center"><code>git ls-files -s &lt;文件名&gt;</code></td>
+<td align="center">显示 <strong>暂存区</strong> 指定文件的 <strong>模式位</strong>、<strong>对象名称</strong>、<strong>阶段编号</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>查看 <strong>文件</strong> 在 <em><strong>工作区</strong></em> 、 <em><strong>暂存区</strong></em> 、 <em><strong>版本库</strong></em> 之间 <em><strong>内容差异</strong></em></p>
+</blockquote>
+<p>返回数据的查看方式：</p>
+<ul>
+<li>新内容<ul>
+<li><code>+</code></li>
+<li>绿色</li>
+</ul>
+</li>
+<li>旧内容<ul>
+<li><code>-</code></li>
+<li>红色</li>
+</ul>
+</li>
+<li>新&#x2F;旧内容<ul>
+<li>新改的文件内容，旧的文件内容</li>
+<li>新文件优先级：工作区 &gt; 缓存区 &gt; 存储库</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git diff</code></td>
+<td align="center"><strong>工作区</strong> 状态是 <strong>M</strong> 的所有文件，与 <strong>缓存区</strong> 的差异内容</td>
+</tr>
+<tr>
+<td align="center"><code>git diff &lt;文件名&gt;</code></td>
+<td align="center"><strong>工作区</strong> 状态是 <strong>M</strong> 的指定文件，与 <strong>缓存区</strong> 的差异内容</td>
+</tr>
+<tr>
+<td align="center"><code>git diff --cached</code></td>
+<td align="center"><strong>暂存区</strong> 状态是 <strong>A</strong> 和 <strong>M</strong> 的所有文件，与 <strong>存储库</strong> 的差异内容</td>
+</tr>
+<tr>
+<td align="center"><code>git diff --cached &lt;文件名&gt;</code></td>
+<td align="center"><strong>暂存区</strong> 状态是 <strong>A</strong> 和 <strong>M</strong> 的指定文件，与 <strong>存储库</strong> 的差异内容</td>
+</tr>
+<tr>
+<td align="center"><code>git diff HEAD</code></td>
+<td align="center"><strong>工作区</strong> 和 <strong>暂存区</strong> 状态是 <strong>M</strong> 的所有文件，与 <strong>存储库</strong> 的差异内容</td>
+</tr>
+<tr>
+<td align="center"><code>git diff HEAD &lt;文件名&gt;</code></td>
+<td align="center"><strong>工作区</strong> 和 <strong>暂存区</strong> 状态是 <strong>M</strong> 的指定文件，与 <strong>存储库</strong> 的差异内容</td>
+</tr>
+<tr>
+<td align="center"><code>git diff HEAD^</code></td>
+<td align="center"><strong>工作区</strong> 和 <strong>暂存区</strong> 状态是 <strong>M</strong> 的所有文件，与 <strong>存储库</strong> 的回退一次的差异内容</td>
+</tr>
+<tr>
+<td align="center"><code>git diff HEAD~2</code></td>
+<td align="center"><strong>工作区</strong> 和 <strong>暂存区</strong> 状态是 <strong>M</strong> 的所有文件，与 <strong>存储库</strong> 的？？？？？？？？差异内容</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>查看文件内容</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git cat-file -p &lt;id&gt;</code></td>
+<td align="center">根据 commit-id、HEAD 等信息查看文件的内容</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="回退"><a href="#回退" class="headerlink" title="回退"></a>回退</h2><blockquote>
+<p>将 <em><strong>工作区</strong></em> 、 <em><strong>暂存区</strong></em> 、 <em><strong>存储库</strong></em> 内容依据 <em><strong>存储库</strong></em> 进行回退<br>（可以回退指定文件）</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git reset --mixed</code></td>
+<td align="center">将 <strong>暂存区</strong> 回退到 <strong>存储库</strong> 当前的版本（即：上次commit提交的内容）</td>
+</tr>
+<tr>
+<td align="center"><code>git reset</code></td>
+<td align="center">与 <code>git reset --mixed</code> 一样【默认】</td>
+</tr>
+<tr>
+<td align="center"><code>git reset &lt;HEAD&gt;</code></td>
+<td align="center">将 <strong>暂存区</strong> 和 <strong>存储库</strong> 回退到 <strong>存储库</strong> 之前指定某版本</td>
+</tr>
+<tr>
+<td align="center"><code>git reset --soft &lt;HEAD~n&gt;</code></td>
+<td align="center">将 <strong>存储库</strong> 回退到 <strong>存储库</strong> 之前的某个版本（HEAD代表当前版本）</td>
+</tr>
+<tr>
+<td align="center"><code>git reset --hard</code></td>
+<td align="center">将 <strong>工作区</strong> 和 <strong>暂存区</strong> 回退到 <strong>存储库</strong> 当前版本，并删除回退点之后所有编辑内容（未commit的）<br><font color=green>【谨慎使用，会删除回退点之后的所有编辑内容（未commit的）】</font></td>
+</tr>
+<tr>
+<td align="center"><code>git reset --hard &lt;HEAD&gt;</code></td>
+<td align="center">与 <code>git reset --hard</code> 一样【或：指定版本（HEAD~n、HEAD^^）】</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>将 <em><strong>暂存区</strong></em> 内容回退到 <em><strong>工作区</strong></em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git restore &lt;文件名&gt;</code></td>
+<td align="center">将 <strong>暂存区</strong> 指定文件回退到 <strong>工作区</strong></td>
+</tr>
+<tr>
+<td align="center"><code>git restore .</code></td>
+<td align="center">将 <strong>暂存区</strong> 所有文件回退到 <strong>工作区</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h2><p>HEAD 用来指定版本</p>
+<blockquote>
+<p><code>^</code> 指定版本</p>
+</blockquote>
+<ul>
+<li><code>HEAD</code>：当前版本</li>
+<li><code>HEAD^</code>：上一个版本</li>
+<li><code>HEAD^^</code>：上上一个版本</li>
+<li><code>HEAD^^^</code>：上上上一个版本</li>
+<li>以此类推……</li>
+</ul>
+<blockquote>
+<p><code>~</code> 指定版本</p>
+</blockquote>
+<ul>
+<li><code>HEAD</code>：当前版本</li>
+<li><code>HEAD~0</code>：当前版本</li>
+<li><code>HEAD~1</code>：上一个版本</li>
+<li><code>HEAD~2</code>：上上一个版本</li>
+<li>以此类推……</li>
+</ul>
+<hr>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>三种参数 <code>-f</code> <code>--cached</code> <code>-r</code> 可以相互结合使用</p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git rm &lt;文件名&gt;</code></td>
+<td align="center"><strong>工作区</strong> 、<strong>暂存区</strong> 、<strong>存储库</strong> 文件内容相同，将文件从 <strong>工作区</strong> 和 <strong>暂存区</strong> 删除</td>
+</tr>
+<tr>
+<td align="center"><code>git rm -f &lt;文件名&gt;</code></td>
+<td align="center"><strong>工作区</strong> 或 <strong>暂存区</strong> 与 <strong>存储库</strong> 中文件内容不同，强行将 <strong>工作区</strong> 和 <strong>暂存区</strong> 内容删除</td>
+</tr>
+<tr>
+<td align="center"><code>git rm --cached &lt;文件名&gt;</code></td>
+<td align="center"><strong>工作区</strong> 、<strong>暂存区</strong> 、<strong>存储库</strong> 文件内容相同，仅删除 <strong>暂存区</strong> 内容</td>
+</tr>
+<tr>
+<td align="center"><code>git rm -r &lt;目录&gt;</code></td>
+<td align="center">删除  <strong>工作区</strong> 和 <strong>暂存区</strong> 中，指定目录即目录下所有目录和文件</td>
+</tr>
+<tr>
+<td align="center"><code>git rm -r *</code></td>
+<td align="center">删除  <strong>工作区</strong> 和 <strong>暂存区</strong> 中，当前所在目录的所有目录和文件</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><blockquote>
+<p>查看历史提交记录<br>【只能看到 HEAD 指针之前的版本信息】<br>【无法看到删除了 commit 记录和执行了 rebase、reset、merge 之后的记录】</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git log</code></td>
+<td align="center">历史提交记录</td>
+</tr>
+<tr>
+<td align="center"><code>git log &lt;文件名&gt;</code></td>
+<td align="center">查看指定文件历史提交记录</td>
+</tr>
+<tr>
+<td align="center"><code>git log --oneline</code></td>
+<td align="center">历史提交记录，简洁版</td>
+</tr>
+<tr>
+<td align="center"><code>git log --graph</code></td>
+<td align="center">查看历史中什么时候有分支、合并</td>
+</tr>
+<tr>
+<td align="center"><code>git log --reverse</code></td>
+<td align="center">逆向显示所有历史记录</td>
+</tr>
+<tr>
+<td align="center"><code>git log --author=&lt;用户名&gt;</code></td>
+<td align="center">查看指定用户提交历史记录</td>
+</tr>
+<tr>
+<td align="center"><code>git log --before=&#123;&lt;指定日期&gt;&#125;</code></td>
+<td align="center">查看指定日期之前的历史记录</td>
+</tr>
+<tr>
+<td align="center"><code>git log --after=&#123;&lt;指定日期&gt;&#125;</code></td>
+<td align="center">查看指定日期之后的历史记录</td>
+</tr>
+<tr>
+<td align="center"><code>git log --no-merges</code></td>
+<td align="center">隐藏合并提交</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>查看参考日志<br>【保留了从clone仓库开始，用户所有在本地库中的提交记录】</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git reflog</code></td>
+<td align="center">查看历史所有的 <strong>提交</strong> 记录</td>
+</tr>
+<tr>
+<td align="center"><code>git reflog &lt;文件名&gt;</code></td>
+<td align="center">查看指定文件历史所有的 <strong>提交</strong> 记录</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>查看历史添加记录</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git fsck --lost-found</code></td>
+<td align="center">查看历史中添加到 <strong>暂存区</strong> ，但未提交到 <strong>存储库</strong> ，并且被其他操作顶替掉的 <strong>暂存区</strong> 记录（blob数据格式代表文件内容）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>查看指定文件提交的历史 <em><strong>修改记录</strong></em></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git blame &lt;文件名&gt;</code></td>
+<td align="center">显示文件中每行内容，最后一次修改的提交记录（HEAD、用户名、时间、代码行数、备注信息）</td>
+</tr>
+<tr>
+<td align="center"><code>git blame -L &lt;代码行1&gt;,&lt;代码行2&gt; &lt;文件名&gt;</code></td>
+<td align="center">文件代码行1，到代码行2最后一次的修改记录</td>
+</tr>
+</tbody></table>
+<blockquote>
+</blockquote>
+<h1 id="远程库操作"><a href="#远程库操作" class="headerlink" title="远程库操作"></a>远程库操作</h1><hr>
+<h2 id="库操作"><a href="#库操作" class="headerlink" title="库操作"></a>库操作</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git remote add &lt;远程库-别名&gt; &lt;远程库-地址&gt;</code></td>
+<td align="center"><strong>添加</strong> 远程库</td>
+</tr>
+<tr>
+<td align="center"><code>git remote -v</code></td>
+<td align="center"><strong>查看</strong> 已经添加的远程库</td>
+</tr>
+<tr>
+<td align="center"><code>git remote rm &lt;远程库-别名&gt;</code></td>
+<td align="center"><strong>删除</strong> 添加的远程库</td>
+</tr>
+<tr>
+<td align="center"><code>git remote update &lt;远程库-别名&gt; --prune</code></td>
+<td align="center"><strong>更新</strong> 远程库，更新后可以看到远程库最新的分支（也不知道对不对，？？？？？？待续）</td>
+</tr>
+<tr>
+<td align="center"><code>git remote rename &lt;旧-远程库-别名&gt; &lt;新-远程库-别名&gt;</code></td>
+<td align="center"><strong>修改</strong> 远程库的 <strong>别名</strong></td>
+</tr>
+<tr>
+<td align="center"><code>git remote show &lt;远程库-别名&gt;</code></td>
+<td align="center"><strong>查看</strong> 指定远程库的 <strong>信息</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="拉取合并"><a href="#拉取合并" class="headerlink" title="拉取合并"></a>拉取合并</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git fetch &lt;远程库-别名&gt;</code></td>
+<td align="center">将远程库全部 <strong>取回</strong> 到本地（不影响本地库）</td>
+</tr>
+<tr>
+<td align="center"><code>git fetch &lt;远程库-别名&gt; &lt;远程分支名&gt;</code></td>
+<td align="center">将远程库指定分支，<strong>拉取</strong> 到本地（不影响本地库）</td>
+</tr>
+<tr>
+<td align="center"><code>git merge &lt;远程库-别名&gt;/&lt;远程分支名&gt;</code></td>
+<td align="center">将远程库指定分支，<strong>合并</strong> 到存储库当前分支（也不知道对不对，？？？？？？待续）</td>
+</tr>
+<tr>
+<td align="center"><code>git pull &lt;远程库-别名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></td>
+<td align="center">将远程库指定分支，拉取合并到本地指定分支（等同于 <code>fetch</code> <code>merge</code> 同时使用）</td>
+</tr>
+<tr>
+<td align="center"><code>git pull &lt;远程库-别名&gt; &lt;远程分支名&gt;</code></td>
+<td align="center">将远程库指定分支，拉取合并到 <strong>当前</strong> 分支（等同于 <code>fetch</code> <code>merge</code> 同时使用）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="推送"><a href="#推送" class="headerlink" title="推送"></a>推送</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git push &lt;远程库-别名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code></td>
+<td align="center">将本地指定分支 <strong>上传</strong> 到远程库并与远程库指定分支 <strong>合并</strong></td>
+</tr>
+<tr>
+<td align="center"><code>git push &lt;远程库-别名&gt; &lt;本地分支名&gt;</code></td>
+<td align="center">本地分支和远程 <strong>分支同名</strong>，将本地分支上传并合并（必须这么写，不然会有警告提示）</td>
+</tr>
+<tr>
+<td align="center"><code>git push --force &lt;远程库-别名&gt; &lt;本地分支名&gt;</code></td>
+<td align="center">本地版本与远程版本有差异，可以进行 <strong>强推</strong>，覆盖远程代码</td>
+</tr>
+<tr>
+<td align="center"><code>git push &lt;远程库-别名&gt; --delete &lt;远程分支名&gt;</code></td>
+<td align="center"><strong>删除</strong> 远程库的指定分支</td>
+</tr>
+<tr>
+<td align="center"><code>git push &lt;远程库-别名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code></td>
+<td align="center">将本地指定分支，上传合并到一个不存在的远程分支，远程库会 <strong>创建</strong> 一个同名分支</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><blockquote>
+<p>分支：像是不同走向的快照，向不同方向组成的树杈</p>
+</blockquote>
+<hr>
+<h2 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git branch</code></td>
+<td align="center">列出 <strong>本地分支</strong></td>
+</tr>
+<tr>
+<td align="center"><code>git branch -v</code></td>
+<td align="center">列出 <strong>本地分支</strong> 和 <strong>最后快照信息</strong></td>
+</tr>
+<tr>
+<td align="center"><code>git branch -a</code></td>
+<td align="center">列出 <strong>远程分支</strong> 和 <strong>本地分支</strong></td>
+</tr>
+<tr>
+<td align="center"><code>git branch -f</code></td>
+<td align="center">列出 <strong>远程分支</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git branch &lt;分支名&gt;</code></td>
+<td align="center">创建分支（根部为当前分支）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git checkout &lt;分支名&gt;</code></td>
+<td align="center">切换到指定分支（切换分支时，分支的最后快照会替换工作区内容）</td>
+</tr>
+<tr>
+<td align="center"><code>git checkout -b &lt;分支名&gt;</code></td>
+<td align="center">创建并切换到该分支</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git merge &lt;分支名&gt;</code></td>
+<td align="center">将指定分支合并到当前所在分支</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h2><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>git branch -d &lt;分支名&gt;</code></td>
+<td align="center">删除指定分支</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://ant-world.github.io/library">蚂蚁</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ant-world.github.io/library/2022/10/24/Git/">https://ant-world.github.io/library/2022/10/24/Git/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ant-world.github.io/library" target="_blank">蚂蚁图书馆</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/library/tags/Git/">Git</a></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/library/2022/09/02/JavaScript/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/library/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JavaScript</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/library/2022/06/23/git-subtree/" title="子仓库 git subtree"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-23</div><div class="title">子仓库 git subtree</div></div></a></div><div><a href="/library/2022/06/23/git-ssh/" title="GitHub使用SSH协议密钥登录"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-23</div><div class="title">GitHub使用SSH协议密钥登录</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-%E6%B5%81%E7%A8%8B"><span class="toc-text">Git 流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-%E9%85%8D%E7%BD%AE"><span class="toc-text">Git 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="toc-text">配置用户信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E9%A1%B9"><span class="toc-text">其他配置项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-text">查看配置信息</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#vim-%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-text">vim 文本编辑器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93"><span class="toc-text">创建仓库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="toc-text">本地库操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0"><span class="toc-text">添加</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4"><span class="toc-text">提交</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B"><span class="toc-text">查看</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E9%80%80"><span class="toc-text">回退</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HEAD"><span class="toc-text">HEAD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-text">删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2"><span class="toc-text">历史</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="toc-text">远程库操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="toc-text">库操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%89%E5%8F%96%E5%90%88%E5%B9%B6"><span class="toc-text">拉取合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E9%80%81"><span class="toc-text">推送</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="toc-text">分支管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%88%86%E6%94%AF"><span class="toc-text">查看分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%86%E6%94%AF"><span class="toc-text">创建分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E5%88%86%E6%94%AF"><span class="toc-text">切换分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF"><span class="toc-text">合并分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%88%86%E6%94%AF"><span class="toc-text">删除分支</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 蚂蚁</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/library/js/utils.js"></script><script src="/library/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script><script src="/library/js/search/algolia.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
