@@ -2,19 +2,19 @@ const my_blog = [
     
     {
         name:"博客的搭建",
-        url:"/library/2022/06/12/blog-build/"
+        url:"/2022/06/12/blog-build/"
     },
     {
         name:"Vue笔记",
-        url:"/library/2022/07/20/Vue笔记/"      //https://ant-world.github.io
+        url:"/2022/07/20/Vue笔记/"      //https://ant-world.github.io
     },
     {
         name:"Vue问题",
-        url:"/library/2022/07/20/Vue问题/"
+        url:"/2022/07/20/Vue问题/"
     },
     {
         name:"JS包管理工具",
-        url:"/library/2022/08/19/JS包管理器/"
+        url:"/2022/08/19/JS包管理器/"
     }
 ]
 
