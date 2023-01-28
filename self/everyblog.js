@@ -6,7 +6,7 @@ const my_blog = [
     },
     {
         name:"Vue笔记",
-        url:"/2022/07/20/Vue笔记/"      //https://ant-world.github.io
+        url:"/2022/07/20/Vue笔记/"
     },
     {
         name:"Vue问题",
