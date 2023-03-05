@@ -5,8 +5,12 @@ const my_blog = [
         url:"/2022/06/12/blog-build/"
     },
     {
-        name:"Vue笔记",
+        name:"Vue2笔记",
         url:"/2022/07/20/Vue笔记/"
+    },
+    {
+        name:"Vue3笔记",
+        url:"/2023/02/05/Vue3/"
     },
     {
         name:"Vue问题",
